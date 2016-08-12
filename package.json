@@ -1,0 +1,19 @@
+{
+  "name": "cycle-grid-driver",
+  "version": "0.0.1",
+  "description": "cycle.js grid driver",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Domagoj Kriskovic",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/domagojk/cycle-grid-driver.git"
+  },
+  "bugs": {
+    "url": "https://github.com/domagojk/cycle-grid-driver/issues"
+  },
+  "homepage": "https://github.com/domagojk/cycle-grid-driver#readme"
+}

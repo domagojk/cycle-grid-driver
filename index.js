@@ -1,3 +1,9 @@
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
 var collection = new Map(); // collection of all streams in grid
 
 const gridDriver = function(componentOutput$, runStreamAdapter) {

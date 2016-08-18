@@ -19,8 +19,8 @@ exports.default = function (componentOutput$, streamAdapter) {
         for (var _iterator = allWrappedStreams[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
           var _step$value = _slicedToArray(_step.value, 2);
 
-          stream$ = _step$value[0];
-          meta = _step$value[1];
+          var stream$ = _step$value[0];
+          var meta = _step$value[1];
 
           if (stream$ && streamAdapter.isValidStream(stream$)) {
 
@@ -82,13 +82,9 @@ exports.default = function (componentOutput$, streamAdapter) {
       return true;
     };
 
-    return grid.main$.filter(function (_ref) {
-      var _ref2 = _slicedToArray(_ref, 2);
+    return grid.main$.startWith(true).map(function () {
+      if (!grid.streams.length) return _xstream2.default.create();
 
-      var stream$ = _ref2[0];
-      var meta = _ref2[1];
-      return shouldStreamMerge(meta, filter);
-    }).map(function () {
       var streams = [];
 
       for (var i in grid.streams) {
@@ -101,6 +97,7 @@ exports.default = function (componentOutput$, streamAdapter) {
   };
 
   return {
+
     getWhere: getWhere,
     get: function get(id) {
       return getWhere({ id: id });

@@ -24,7 +24,7 @@ export default function (componentOutput$, streamAdapter) {
       if (!Array.isArray(allWrappedStreams))
         throw new Error('Unsupported stream sent to grid')
 
-      for ([stream$, meta] of allWrappedStreams) {
+      for (let [stream$, meta] of allWrappedStreams) {
         if (stream$ && streamAdapter.isValidStream(stream$)) {
 
           grid.streams.push({ stream$, meta });
@@ -71,8 +71,11 @@ export default function (componentOutput$, streamAdapter) {
     }
 
     return grid.main$
-      .filter(([stream$, meta]) => shouldStreamMerge(meta, filter))
+      .startWith(true)
       .map(() => {
+        if (!grid.streams.length)
+          return xs.create();
+
         let streams = [];
 
         for (let i in grid.streams) {
@@ -86,6 +89,7 @@ export default function (componentOutput$, streamAdapter) {
   }
 
   return {
+    
     getWhere: getWhere,
     get: (id) => getWhere({ id: id }),
     register: register

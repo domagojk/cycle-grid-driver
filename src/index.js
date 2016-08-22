@@ -1,97 +1,44 @@
 import xs from 'xstream';
+import { Grid } from './grid';
+import { sinkFactory } from './sinkFactory';
 
-const grid = {
-  // main grid stream
-  main$: xs.create({
-    start: listener => {
-      grid.pushToGrid = data => {
-        listener.next(data)
-      }
-    },
-    stop: () => {
-      grid.pushToGrid = function () { };
-    }
-  }),
-  // used to push data in main$
-  pushToGrid: function () { },
-  // all streams added to main$
-  streams: []
-}
+function gridDriver(grid, componentOutput$) {
 
-export default function (componentOutput$, streamAdapter) {
   componentOutput$.addListener({
-    next: allWrappedStreams => {
-      if (!Array.isArray(allWrappedStreams))
+    next: streams => {
+      if (!Array.isArray(streams))
         throw new Error('Unsupported stream sent to grid')
 
-      for (let [stream$, meta] of allWrappedStreams) {
-        if (stream$ && streamAdapter.isValidStream(stream$)) {
-
-          grid.streams.push({ stream$, meta });
-          grid.pushToGrid([stream$, meta]);
-        } else {
-          throw new Error('Unsupported stream sent to grid')
-        }
+      for (let stream$ of streams) {
+        if (stream$.as)
+          grid.registerStream(stream$);
+        else
+          grid.sendInMain$(stream$);
       }
     },
     error: () => { },
     complete: () => { },
   });
 
-  const register = (wrapped, stream$) => {
-    if (!stream$ && wrapped) {
-      stream$ = wrapped;
-      wrapped = [];
-    }
-
-    if (!wrapped) {
-      wrapped = [];
-    }
-    wrapped.with = function (params) {
-      delete wrapped.with;
-      delete wrapped.as;
-
-      wrapped.push([stream$, params]);
-      var wrapped$ = xs.of(wrapped);
-      wrapped$.register = register.bind(this, wrapped);
-      return wrapped$
-    }
-    wrapped.as = id => wrapped.with({ id: id });
-
-    return wrapped;
-  }
-
-  const getWhere = (filter) => {
-    let shouldStreamMerge = (data, filter) => {
-      for (var key in filter) {
-        if (filter[key] !== data[key])
-          return false;
-      }
-      return true;
-    }
-
-    return grid.main$
-      .startWith(true)
-      .map(() => {
-        if (!grid.streams.length)
-          return xs.create();
-
-        let streams = [];
-
-        for (let i in grid.streams) {
-          if (shouldStreamMerge(grid.streams[i].meta, filter)) {
-            streams.push(grid.streams[i].stream$);
-          }
-        }
-        return xs.merge(...streams);
-      })
-      .flatten()
-  }
-
   return {
-    
-    getWhere: getWhere,
-    get: (id) => getWhere({ id: id }),
-    register: register
+    get: grid.get,
+    mainStream: grid.mainStream,
+    send: sinkFactory({
+      main: { functionName: 'send', methodName: 'with' },
+      link: { functionName: 'register', methodName: 'as' }
+    }),
+    register: sinkFactory({
+      main: { functionName: 'register', methodName: 'as' },
+      link: { functionName: 'send', methodName: 'with' }
+    })
   }
 };
+
+let grids = {};
+export function makeGridDriver(id = 'default') {
+  
+  if (!grids[id])
+    grids[id] = new Grid();
+
+  return gridDriver.bind(gridDriver, grids[id]);
+}

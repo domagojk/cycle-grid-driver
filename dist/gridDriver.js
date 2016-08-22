@@ -3,19 +3,16 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.makeGridDriver = makeGridDriver;
+exports.gridDriver = gridDriver;
+exports.sinkFactory = sinkFactory;
 
 var _xstream = require('xstream');
 
 var _xstream2 = _interopRequireDefault(_xstream);
 
-var _grid = require('./grid');
-
-var _sinkFactory = require('./sinkFactory');
-
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function gridDriver(grid, componentOutput$) {
+function gridDriver(grid, componentOutput$, streamAdapter) {
 
   componentOutput$.addListener({
     next: function next(streams) {
@@ -29,7 +26,11 @@ function gridDriver(grid, componentOutput$) {
         for (var _iterator = streams[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
           var stream$ = _step.value;
 
-          if (stream$.as) grid.registerStream(stream$);else grid.sendInMain$(stream$);
+          if (stream$ && streamAdapter.isValidStream(stream$)) {
+            if (stream$.as) grid.registerStream(stream$);else grid.sendInMain$(stream$);
+          } else {
+            throw new Error('Unsupported stream sent to grid');
+          }
         }
       } catch (err) {
         _didIteratorError = true;
@@ -51,25 +52,44 @@ function gridDriver(grid, componentOutput$) {
   });
 
   return {
-    get: grid.get,
-    mainStream: grid.mainStream,
-    send: (0, _sinkFactory.sinkFactory)({
+    select: grid.select.bind(grid),
+    getMain$$: grid.getMain$$.bind(grid),
+    send: sinkFactory({
       main: { functionName: 'send', methodName: 'with' },
       link: { functionName: 'register', methodName: 'as' }
     }),
-    register: (0, _sinkFactory.sinkFactory)({
+    register: sinkFactory({
       main: { functionName: 'register', methodName: 'as' },
       link: { functionName: 'send', methodName: 'with' }
     })
   };
 };
 
-var grids = {};
-function makeGridDriver() {
-  var id = arguments.length <= 0 || arguments[0] === undefined ? 'default' : arguments[0];
+function sinkFactory(params) {
 
+  return function (wrapped, stream$) {
+    if (!stream$ && wrapped) {
+      stream$ = wrapped;
+      wrapped = [];
+    }
 
-  if (!grids[id]) grids[id] = new _grid.Grid();
+    if (!wrapped) wrapped = [];
 
-  return gridDriver.bind(gridDriver, grids[id]);
+    wrapped[params.main.methodName] = function (data) {
+      delete wrapped[params.main.methodName];
+      stream$[params.main.methodName] = data;
+      wrapped.push(stream$);
+
+      var wrapped$ = _xstream2.default.of(wrapped);
+      wrapped$[params.main.functionName] = sinkFactory(params).bind(this, wrapped);
+      wrapped$[params.link.methodName] = sinkFactory({
+        main: params.link,
+        link: params.main
+      }).bind(this, wrapped);
+
+      return wrapped$;
+    };
+
+    return wrapped;
+  };
 }

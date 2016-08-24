@@ -85,6 +85,6 @@ makeGridDriver() is equivalent to makeGridDriver('default') and it returns a 'de
 - `makeGridDriver` *(String)*: This is a function which, when called, returns a Grid Driver for Cycle.js
 apps. The driver is also a function, and it takes `id` as input, and outputs an Grid instance
 - `grid.get` *(String)*: returns a stream registered as `id` (if stream is not created when called proxy which will imitate future stream will be returned)
-- `grid.mainStream`: returns a main grid stream (of streams) which are sent using `grid.send`
+- `grid.mainStream`: returns a main grid stream (of streams) which are sent using `grid.send`. Returned stream also contains all streams that may be sent before calling this function (so it is not required to subscribe on main stream before sending anything from other components)
 - `grid.send` *(Stream)*: used to send stream in grids main stream, returns object that contains `with` function for labeling your streams 
 - `grid.register` *(Stream)*: used to register stream in grid (but it is not in main stream), returns object that contains `as` function for assigning stream id

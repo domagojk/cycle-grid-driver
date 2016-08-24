@@ -1,3 +1,5 @@
+[![NPM version][npm-image]][npm-url] [![Downloads][downloads-image]][npm-url]
+
 # Cycle Grid
 
 A driver used for communcation between cycle components keeping them loosely coupled accross application.
@@ -88,3 +90,7 @@ apps. The driver is also a function, and it takes `id` as input, and outputs an 
 - `grid.mainStream`: returns a main grid stream (of streams) which are sent using `grid.send`. Returned stream also contains all streams that may be sent before calling this function (so it is not required to subscribe on main stream before sending anything from other components)
 - `grid.send` *(Stream)*: used to send stream in grids main stream, returns object that contains `with` function for labeling your streams 
 - `grid.register` *(Stream)*: used to register stream in grid (but it is not in main stream), returns object that contains `as` function for assigning stream id
+
+[downloads-image]: http://img.shields.io/npm/dm/cycle-grid-driver.svg
+[npm-url]: https://npmjs.org/package/cycle-grid-driver
+[npm-image]: http://img.shields.io/npm/v/cycle-grid-driver.svg

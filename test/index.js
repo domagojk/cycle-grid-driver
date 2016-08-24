@@ -136,6 +136,7 @@ describe('Grid', () => {
     
     run(function ({grid}) {
       var combined$ = grid.mainStream()
+        .filter(stream => stream.with.group == "tocombine")
         .compose(flattenConcurrently);
 
       combined$.addListener({

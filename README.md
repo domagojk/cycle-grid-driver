@@ -4,7 +4,7 @@
 
 A driver used for communcation between cycle components keeping them loosely coupled accross application.
 
-More info on the concept: (todo)
+More info on the concept: [Creating a Scalable JavaScript Application with Cycle.js](https://medium.com/@domagojk/creating-a-scalable-javascript-application-with-cycle-js-589f4d4020a5#.ucoin75ee)
 
 ```
 npm install cycle-grid-driver

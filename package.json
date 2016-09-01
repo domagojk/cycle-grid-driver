@@ -1,6 +1,6 @@
 {
   "name": "cycle-grid-driver",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "cycle.js grid driver",
   "main": "dist/index.js",
   "scripts": {

@@ -38,7 +38,7 @@ let grids = {};
 export function makeGridDriver(id = 'default') {
   
   if (!grids[id])
-    grids[id] = new Grid();
+    grids[id] = Grid();
 
   return gridDriver.bind(gridDriver, grids[id]);
 }

@@ -16,50 +16,50 @@ var _concat2 = _interopRequireDefault(_concat);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function Grid() {
-  var _this = this;
 
-  this.main$$ = _xstream2.default.create({
+  var pushToGrid = function pushToGrid() {};
+  var registeredStreams = {};
+  var mainStreamHistory = [];
+
+  var main$$ = _xstream2.default.create({
     start: function start(listener) {
-      _this.pushToGrid = function (stream$) {
+      pushToGrid = function pushToGrid(stream$) {
         listener.next(stream$);
       };
     },
     stop: function stop() {}
   });
-  this.pushToGrid = function () {};
-  this.registeredStreams = {};
-  this.mainStreamHistory = [];
 
   var get = function get(id) {
-    if (_this.registeredStreams[id]) return _this.registeredStreams[id];
+    if (registeredStreams[id]) return registeredStreams[id];
 
-    _this.registeredStreams[id] = _xstream2.default.create();
-    _this.registeredStreams[id].proxy = true;
+    registeredStreams[id] = _xstream2.default.create();
+    registeredStreams[id].proxy = true;
 
-    return _this.registeredStreams[id];
+    return registeredStreams[id];
   };
 
   var mainStream = function mainStream() {
-    return (0, _concat2.default)(_xstream2.default.fromArray(_this.mainStreamHistory), _this.main$$);
+    return (0, _concat2.default)(_xstream2.default.fromArray(mainStreamHistory), main$$);
   };
 
   var registerStream = function registerStream(stream$) {
-    if (_this.registeredStreams[stream$.as]) {
-      if (!_this.registeredStreams[stream$.as].proxy) {
+    if (registeredStreams[stream$.as]) {
+      if (!registeredStreams[stream$.as].proxy) {
         throw new Error('stream with id ' + stream$.as + ' is already registered in grid');
       }
-      _this.registeredStreams[stream$.as].imitate(stream$);
-      delete _this.registeredStreams[stream$.as].proxy;
+      registeredStreams[stream$.as].imitate(stream$);
+      delete registeredStreams[stream$.as].proxy;
     } else {
-      _this.registeredStreams[stream$.as] = stream$;
+      registeredStreams[stream$.as] = stream$;
     }
 
     delete stream$.as;
   };
 
   var sendInMain$ = function sendInMain$(stream$) {
-    _this.pushToGrid(stream$);
-    _this.mainStreamHistory.push(stream$);
+    pushToGrid(stream$);
+    mainStreamHistory.push(stream$);
   };
 
   return {

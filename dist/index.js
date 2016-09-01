@@ -69,7 +69,7 @@ function makeGridDriver() {
   var id = arguments.length <= 0 || arguments[0] === undefined ? 'default' : arguments[0];
 
 
-  if (!grids[id]) grids[id] = new _grid.Grid();
+  if (!grids[id]) grids[id] = (0, _grid.Grid)();
 
   return gridDriver.bind(gridDriver, grids[id]);
 }

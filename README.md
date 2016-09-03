@@ -12,8 +12,9 @@ npm install cycle-grid-driver
 
 ## Why would you do that?
 
-For more info on the concept: [Creating a Scalable JavaScript Application with Cycle.js](https://medium.com/@domagojk/creating-a-scalable-javascript-application-with-cycle-js-589f4d4020a5#.ucoin75ee)
-Bear in mind that this is primarly designed for creating large-scale applications.
+For more info on the concept, check: [Creating a Scalable JavaScript Application with Cycle.js](https://medium.com/@domagojk/creating-a-scalable-javascript-application-with-cycle-js-589f4d4020a5#.ucoin75ee)
+
+and bear in mind that this is primarly designed for creating large-scale applications.
 
 ## Usage
 

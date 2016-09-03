@@ -10,7 +10,7 @@ rather than creating parent-child relationships by using one main function
 npm install cycle-grid-driver
 ```
 
-## Why would you do that?
+## Why would I do that?
 
 For more info on the concept, check: [Creating a Scalable JavaScript Application with Cycle.js](https://medium.com/@domagojk/creating-a-scalable-javascript-application-with-cycle-js-589f4d4020a5#.ucoin75ee)
 

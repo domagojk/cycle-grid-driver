@@ -8,9 +8,6 @@ could be separated to work “in parallel” rather than using all components as
 
 This grid can be used as a API (in form of streams) for all "main cycle" components. 
 
-```
-npm install cycle-grid-driver
-```
 
 ## Why would I do that?
 
@@ -20,6 +17,12 @@ is not essential for parent to function and could be reused or removed it should
 For more info on the concept, check: [Creating a Scalable JavaScript Application with Cycle.js](https://medium.com/@domagojk/creating-a-scalable-javascript-application-with-cycle-js-589f4d4020a5#.ucoin75ee)
 
 and bear in mind that this is primarily designed for creating large-scale applications.
+
+## Installation
+
+```
+npm install cycle-grid-driver
+```
 
 ## Usage
 

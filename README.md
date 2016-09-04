@@ -4,7 +4,7 @@
 
 A driver providing "grid" for communcation between multiple "main cycle" components keeping them loosely coupled accross 
 the application. Designed for creating an arhitecture (primarily for large-scale apps) where components 
-could be separated to work “in parallel” rather than using all components as children of a single main function.
+could be separated to work “in parallel” rather than using them as children of a single main function.
 
 This grid can be used as an API (in form of streams) for all "main cycle" components inside the application. 
 

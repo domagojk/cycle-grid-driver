@@ -2,15 +2,20 @@
 
 # Cycle Grid
 
-A driver used for communcation between Cycle.js components keeping them loosely coupled accross application. 
-Designed for creating an arhitecture where components could be separated to work “in parallel” 
-rather than creating parent-child relationships by using one main function 
+A driver providing "grid" for communcation between multiple "main cycle" components keeping them loosely coupled accross 
+the application. Designed for creating an arhitecture (primarily for large-scale apps) where components 
+could be separated to work “in parallel” rather than using all components as a child of a single main function.
+
+This grid can be used as a API (in form of streams) for all "main cycle" components. 
 
 ```
 npm install cycle-grid-driver
 ```
 
 ## Why would I do that?
+
+The idea of this concept is not to remove all parent-child relationships inside one cycle component, but if a child 
+is not essential for parent to function and could be reused or removed it should then separated as a "indepented cycle" 
 
 For more info on the concept, check: [Creating a Scalable JavaScript Application with Cycle.js](https://medium.com/@domagojk/creating-a-scalable-javascript-application-with-cycle-js-589f4d4020a5#.ucoin75ee)
 

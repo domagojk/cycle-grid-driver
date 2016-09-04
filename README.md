@@ -6,7 +6,7 @@ A driver providing "grid" for communcation between multiple "main cycle" compone
 the application. Designed for creating an arhitecture (primarily for large-scale apps) where components 
 could be separated to work “in parallel” rather than using all components as a child of a single main function.
 
-This grid can be used as a API (in form of streams) for all "main cycle" components. 
+This grid can be used as an API (in form of streams) for all "main cycle" components inside the application. 
 
 
 ## Why would I do that?

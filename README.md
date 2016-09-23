@@ -48,7 +48,7 @@ function main({ grid }) {
 }
 
 const drivers = {
-  HTTP: makeGridDriver()
+  grid: makeGridDriver()
 }
 
 run(main, drivers);
@@ -85,7 +85,7 @@ function main({ grid }) {
 }
 
 const drivers = {
-  HTTP: makeGridDriver()
+  grid: makeGridDriver()
 }
 
 run(main, drivers);
